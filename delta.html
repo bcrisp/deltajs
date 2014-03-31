@@ -1,0 +1,32 @@
+<html>
+
+<style>
+div {display:none;}
+</style>
+
+<script type="text/javascript" src="jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="delta.js"></script>
+<script type="text/javascript">
+
+
+$(function(){
+
+var FAlgebra = {'begin': {}, 'middle': {'option1':{}, 'option2':{}}, 'end':{}};
+setStructure(FAlgebra);
+
+$('#moveMiddle').
+	setTransition(FAlgebra.middle, function(){$('.middle').show();});
+
+
+$('#moveOption2').
+	setTransition(FAlgebra.middle.option2, function(){$('.option2').show();});
+
+});
+
+</script>
+<div id="initial" class="initial">Initial node. Nothing interesting has happened yet.</div>
+<button id="moveMiddle">Click me to nagivate to the Middle state</button>
+<button id="moveOption2">Click me to move to Option 2</button>
+<div class="middle">This is middle</div>
+<div class="option2">This is option 2</div>
+</html>
