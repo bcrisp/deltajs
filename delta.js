@@ -53,24 +53,55 @@ function findPath (state)
 
 
 // call each UI transition in order
-function executeChain(algebra, transitionPath)
-{
+function executeChain(algebra, transitionPath) {
+
+    $('.FAlgebra').hide();
+    $('.clientalert').hide();
+
+    if (typeof(transitionPath) == 'object')
+        transitionPath = findPath(transitionPath);
+
 	var acc = algebra;
 	var states = transitionPath.split('.');
 
 	$(states).slice(1).each(function(i, a){
 		acc = acc[a];
 		if (typeof(acc.f) == 'function')
-				acc.f();
+		    acc.f();
 	});
 }
 
-// jQuery plugin
-$.fn.setTransition = function(state, transition){
-			var path = findPath(state);
-			state.f = transition;
-
-			$(this).click(function(){
-				executeChain(FAlgebra, path);
-		});	
+var transitionTo = function (state) {
+    executeChain(FAlgebra, state);
 }
+
+function setTransition(state, transition) {
+    if (state){
+        var path = findPath(state);
+
+        if (state.f)
+            new Error(state + ' already has a transition function attached. Please add additional functionality to the existing function');
+        else
+            state.f = transition;
+    }
+    else console.log(state + ' is not a recognized path.');
+}
+
+ // jQuery plugin
+(function ($) {
+
+    $.fn.setTransition = function (state, transition) {
+
+        if (state) {
+            var path = findPath(state);
+            if (transition)
+                state.f = transition;
+
+            $(this).click(function () {
+                executeChain(FAlgebra, path);
+            });
+        }
+        else console.log(state + ' is not a recognized path.');
+    }
+
+}(jQuery));
